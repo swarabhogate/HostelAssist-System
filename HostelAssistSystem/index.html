@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HostelAssist System - Student Registration</title>
+
+<style>
+
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #177e89, #0f5f6b);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 0;
+         margin-right: 30px;
+    }
+    .container {
+        background: #ffffff;
+        padding: 45px;
+        width: 750px;
+        border-radius: 18px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    }
+
+    h2 {
+        text-align: center;
+        color: #177e89;
+        margin-bottom: 30px;
+        font-size: 28px;
+    }
+
+    label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        transition: 0.3s;
+       
+        
+    }
+
+    input:focus, select:focus {
+        border-color: #177e89;
+        box-shadow: 0 0 5px rgba(23,126,137,0.4);
+        outline: none;
+    }
+
+    .password-wrap {
+        position: relative;
+    }
+
+    .password-wrap input {
+        padding-right: 48px;
+        box-sizing: border-box;
+    }
+
+    .toggle-password {
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        color: #177e89;
+        font-size: 18px;
+        cursor: pointer;
+        width: auto;
+        padding: 0;
+        margin-top: 0;
+        box-shadow: none;
+        transition: none;
+    }
+
+    .toggle-password:hover {
+        transform: translateY(-50%);
+        box-shadow: none;
+    }
+
+    small {
+        color: #666;
+        font-size: 12px;
+    }
+
+    .form-group {
+        display: flex;
+        gap: 25px;
+        margin-bottom: 20px;
+        padding-right: 10px;
+
+    }
+
+    .form-group div {
+        flex: 1;
+    }
+
+    .single-field {
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        margin: 30px 0 15px;
+        font-weight: 600;
+        color: #177e89;
+        border-bottom: 2px solid #177e89;
+        padding-bottom: 5px;
+        font-size: 16px;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #177e89, #0f5f6b);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 15px;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .link {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .link a {
+        color: #177e89;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .link a:hover {
+        text-decoration: underline;
+    }
+
+    @media(max-width: 768px){
+        .container{
+            width: 90%;
+            padding: 30px;
+        }
+
+        .form-group{
+            flex-direction: column;
+            gap: 15px;
+        }
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Student Registration</h2>
+
+<form id="registerForm" action="register.php" method="POST">
+
+    <!-- Personal Information -->
+    <div class="section-title">Personal Information</div>
+
+    <div class="form-group">
+        <div>
+            <label>First Name</label>
+            <input type="text" name="first_name" required>
+        </div>
+        <div>
+            <label>Middle Name</label>
+            <input type="text" name="middle_name">
+        </div>
+        <div>
+            <label>Last Name</label>
+            <input type="text" name="last_name" required>
+        </div>
+    </div>
+
+    <div class="single-field">
+        <label>Email ID</label>
+        <input type="email"
+        name="email"
+        id="email"
+        placeholder="Enter your email address"
+        pattern="^(dse|en)[0-9]+@git-india\.edu\.in$"
+        style="text-transform: lowercase;"
+        required>
+    </div>
+
+    <div class="form-group">
+        <div>
+            <label>Password</label>
+            <div class="password-wrap">
+                <input type="password" name="password" id="password"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                <button type="button" class="toggle-password" onclick="togglePassword('password', this)" aria-label="Show password">&#128065;</button>
+            </div>
+        </div>
+        <div>
+            <label>Confirm Password</label>
+            <div class="password-wrap">
+                <input type="password" name="confirm_password" id="confirmPassword" required>
+                <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword', this)" aria-label="Show password">&#128065;</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="single-field">
+        <label>Mobile Number</label>
+        <input type="tel" name="mobile"
+            pattern="[0-9]{10}" maxlength="10" required>
+    </div>
+
+    <!-- Parent Information -->
+    <div class="section-title">Parent Contact Details</div>
+
+    <div class="form-group">
+        <div>
+            <label>Parent Mobile No 1</label>
+            <input type="tel" name="parent_mobile1"
+                pattern="[0-9]{10}" maxlength="10" required>
+        </div>
+        <div>
+            <label>Parent Mobile No 2</label>
+            <input type="tel" name="parent_mobile2"
+                pattern="[0-9]{10}" maxlength="10">
+        </div>
+    </div>
+
+    <!-- Academic Information -->
+    <div class="section-title">Academic & Hostel Details</div>
+
+    <div class="form-group">
+        <div>
+            <label>Room Number</label>
+            <input type="text" name="room_number"
+                pattern="[A-Za-z0-9]+" required>
+        </div>
+        <div>
+            <label>Department</label>
+            <select name="department" required>
+                <option value="">Select Department</option>
+                <option>AIML</option>
+                <option>COMP</option>
+                <option>EXTC</option>
+                <option>CHEM</option>
+                <option>CIVIL</option>
+                <option>MECH</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div>
+            <label>Year</label>
+            <select name="year" id="yearSelect" required>
+                <option value="">Select Year</option>
+                <option>First Year</option>
+                <option>Second Year</option>
+                <option>Third Year</option>
+                <option>Final Year</option>
+            </select>
+        </div>
+        <div>
+            <label>Semester</label>
+            <select name="semester" id="semesterSelect" required>
+                <option value="">Select Semester</option>
+            </select>
+        </div>
+    </div>
+
+    <button type="submit">Register</button>
+
+</form>
+
+    <div class="link">
+        Already have an account? <a href="login.html">Login</a>
+    </div>
+
+</div>
+
+<script>
+    function togglePassword(inputId, button) {
+        const input = document.getElementById(inputId);
+        if (input.type === "password") {
+            input.type = "text";
+        } else {
+            input.type = "password";
+        }
+    }
+
+    const semesterMap = {
+        "First Year": ["1", "2"],
+        "Second Year": ["3", "4"],
+        "Third Year": ["5", "6"],
+        "Final Year": ["7", "8"]
+    };
+
+    function updateSemesterOptions() {
+        const year = document.getElementById("yearSelect").value;
+        const semesterSelect = document.getElementById("semesterSelect");
+        semesterSelect.innerHTML = '<option value="">Select Semester</option>';
+
+        (semesterMap[year] || []).forEach(function(value) {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = value;
+            semesterSelect.appendChild(option);
+        });
+    }
+
+    document.getElementById("yearSelect").addEventListener("change", updateSemesterOptions);
+
+    document.getElementById("email").addEventListener("input", function() {
+        this.value = this.value.toLowerCase();
+    });
+
+    document.getElementById("registerForm").addEventListener("submit", function(e){
+        const pass = document.getElementById("password").value;
+        const confirmPass = document.getElementById("confirmPassword").value;
+        const studentMobile = document.querySelector('input[name="mobile"]').value.trim();
+        const parentOne = document.querySelector('input[name="parent_mobile1"]').value.trim();
+        const parentTwo = document.querySelector('input[name="parent_mobile2"]').value.trim();
+
+        if(pass !== confirmPass){
+            alert("Passwords do not match!");
+            e.preventDefault();
+            return;
+        }
+
+        const numbers = [studentMobile, parentOne, parentTwo].filter(Boolean);
+        const uniqueNumbers = new Set(numbers);
+        if (numbers.length !== uniqueNumbers.size) {
+            alert("Student mobile number, Parent Mobile No 1, and Parent Mobile No 2 must all be different.");
+            e.preventDefault();
+        }
+    });
+</script>
+
+</body>
+</html>

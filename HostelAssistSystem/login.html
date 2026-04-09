@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HostelAssist System - Login</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #177e89;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .container {
+        background: #ffffff;
+        padding: 40px;
+        width: 100%;
+        max-width: 390px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+        text-align: center;
+        color: #177e89;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #5f6f75;
+        margin: 0 0 25px;
+    }
+
+    .user-select {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .user-box {
+        cursor: pointer;
+        padding: 10px 4px;
+        border-radius: 10px;
+        text-align: center;
+        width: 25%;
+        border: 1px solid #ccc;
+        transition: 0.3s;
+        font-size: 14px;
+    }
+
+    .user-box .icon {
+        display: block;
+        font-size: 22px;
+        margin-bottom: 6px;
+    }
+
+    .user-box .icon-svg {
+        display: block;
+        width: 28px;
+        height: 28px;
+        margin: 0 auto 6px;
+        fill: currentColor;
+    }
+
+    .user-box:hover {
+        background: #e6f4f5;
+    }
+
+    .active {
+        background: #177e89;
+        color: white;
+        border: none;
+    }
+
+    label {
+        font-weight: 500;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    input:focus {
+        border-color: #177e89;
+        outline: none;
+    }
+
+    .password-wrap {
+        position: relative;
+    }
+
+    .password-wrap input {
+        padding-right: 46px;
+    }
+
+    .toggle-password {
+        position: absolute;
+        top: 36%;
+        right: 10px;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        color: #177e89;
+        font-size: 18px;
+        cursor: pointer;
+        width: auto;
+        padding: 0;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #177e89;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #145e66;
+    }
+
+    .link {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .link a {
+        color: #177e89;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .link a:hover {
+        text-decoration: underline;
+    }
+
+    .link small {
+        display: block;
+        margin-top: 6px;
+        color: #5f6f75;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>HostelAssist Login</h2>
+    <p class="subtitle">Choose your portal and sign in</p>
+
+    <div class="user-select">
+        <div id="student" class="user-box active" onclick="selectUser('student')"><span class="icon">&#127891;</span>Student</div>
+        <div id="faculty" class="user-box" onclick="selectUser('faculty')"><span class="icon">&#128105;&#8205;&#127979;</span>Faculty</div>
+        <div id="admin" class="user-box" onclick="selectUser('admin')"><span class="icon">&#128737;</span>Admin</div>
+        <div id="security" class="user-box" onclick="selectUser('security')"><span class="icon">&#128110;&#8205;&#9794;&#65039;</span>Security</div>
+    </div>
+
+    <form action="login.php" method="post">
+        <input type="hidden" name="user_type" id="user_type" value="student">
+
+        <label>Email ID</label>
+        <input type="email"
+               id="email"
+               name="email"
+               placeholder="Enter your email address"
+               pattern="^(dse|en)[0-9]+@git-india\.edu\.in$"
+               title="Enter valid email like dse123456@git-india.edu.in"
+               style="text-transform: lowercase;"
+               required>
+
+        <label>Password</label>
+        <div class="password-wrap">
+            <input type="password" id="password" name="password" required>
+            <button type="button" class="toggle-password" id="togglePasswordBtn" onclick="togglePassword()" aria-label="Show password">&#128065;</button>
+        </div>
+
+        <button type="submit">Login</button>
+
+        <div style="text-align: right; margin-top: 10px;">
+            <a href="forgot_password.php" style="color: #17a2b8; text-decoration: none; font-size: 14px; font-weight: 500;">Forgot Password?</a>
+        </div>
+    </form>
+
+    <div class="link" id="registerBox">
+        Don't have an account? <a href="index.html">Register</a>
+    </div>
+</div>
+
+<script>
+function selectUser(type) {
+    document.getElementById('user_type').value = type;
+    document.getElementById('student').classList.remove('active');
+    document.getElementById('faculty').classList.remove('active');
+    document.getElementById('admin').classList.remove('active');
+    document.getElementById('security').classList.remove('active');
+    document.getElementById(type).classList.add('active');
+
+    const emailInput = document.getElementById('email');
+    const registerBox = document.getElementById('registerBox');
+
+    if (type === 'student') {
+        emailInput.setAttribute('pattern', '^(dse|en)[0-9]+@git-india\\.edu\\.in$');
+        emailInput.setAttribute('title', 'Enter valid email like dse123456@git-india.edu.in');
+        registerBox.style.display = 'block';
+    } else {
+        emailInput.removeAttribute('pattern');
+        emailInput.removeAttribute('title');
+        registerBox.style.display = 'none';
+    }
+}
+
+function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+    } else {
+        passwordInput.type = 'password';
+    }
+}
+
+document.getElementById('email').addEventListener('input', function () {
+    this.value = this.value.toLowerCase();
+});
+</script>
+
+</body>
+</html>

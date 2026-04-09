@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HostelAssist System - New Complaint</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #177e89, #0f5f6b);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 0;
+    }
+
+    .container {
+        background: #f0fbfc;
+        padding: 45px;
+        width: 750px;
+        border-radius: 18px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    }
+
+    h2 {
+        text-align: center;
+        color: #177e89;
+        margin-bottom: 30px;
+    }
+
+    label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #177e89, #0f5f6b);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Toggle Switch */
+    .toggle-container {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+        margin-right: 10px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 24px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: #177e89;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+
+    /* POPUP */
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: white;
+        width: 360px;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        animation: popup 0.3s ease-in-out;
+    }
+
+    @keyframes popup {
+        from { transform: scale(0.7); }
+        to { transform: scale(1); }
+    }
+
+    .checkmark {
+        font-size: 60px;
+        color: #177e89;
+    }
+
+    .complaint-id {
+        font-weight: bold;
+        margin: 15px 0;
+    }
+
+    .modal button {
+        width: auto;
+        padding: 10px 20px;
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Submit New Complaint</h2>
+
+    <form id="complaintForm" action="submit_complaint.php" method="POST" enctype="multipart/form-data">
+
+
+       <div class="form-group">
+        <label>Select Category</label>
+        <select name="category" required>
+            <option value="">Choose Category</option>
+            <option>Plumbing</option>
+            <option>Electricity</option>
+            <option>WiFi</option>
+            <option>Cleanliness</option>
+            <option>Food</option>
+            <option>Other</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Description</label>
+        <textarea name="description" rows="4" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Upload Image (Optional)</label>
+        <input type="file" name="image" accept="image/*">
+    </div>
+
+    <div class="form-group">
+        <label>Submit Anonymously</label>
+        <div class="toggle-container">
+            <label class="switch">
+                <input type="checkbox" name="anonymous" value="yes">
+                <span class="slider"></span>
+            </label>
+            <span>Turn ON to hide your name</span>
+        </div>
+    </div>
+
+    <button type="submit">Submit Complaint</button>
+</form>
+</div>
+
+<!-- POPUP -->
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <div class="checkmark">✔</div>
+        <h3>Complaint Submitted Successfully</h3>
+        <div class="complaint-id">
+            Complaint ID: <span id="complaintNumber"></span>
+        </div>
+        <button onclick="closeModal()">Back to Dashboard</button>
+    </div>
+</div>
+
+<script>
+
+</script>
+
+</body>
+</html>
