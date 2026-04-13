@@ -64,6 +64,19 @@ if (!function_exists('ensureFacultySchema')) {
 if (!function_exists('ensureComplaintWorkflowSchema')) {
     function ensureComplaintWorkflowSchema($conn)
     {
+        $sql = "CREATE TABLE IF NOT EXISTS complaints (
+            complaint_id INT AUTO_INCREMENT PRIMARY KEY,
+            student_id INT NOT NULL,
+            title VARCHAR(255) NOT NULL,
+            description TEXT NOT NULL,
+            status VARCHAR(100) NOT NULL DEFAULT 'Pending',
+            remark TEXT NULL,
+            completion_date DATE NULL,
+            submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            deleted_by_student TINYINT(1) NOT NULL DEFAULT 0,
+            deleted_by_warden TINYINT(1) NOT NULL DEFAULT 0
+        )";
+        mysqli_query($conn, $sql);
         ensureColumnExists($conn, 'complaints', 'status', "VARCHAR(100) NOT NULL DEFAULT 'Pending' AFTER description");
         ensureColumnExists($conn, 'complaints', 'remark', "TEXT NULL AFTER status");
         ensureColumnExists($conn, 'complaints', 'completion_date', "DATE NULL AFTER remark");

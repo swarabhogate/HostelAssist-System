@@ -1,6 +1,8 @@
 <?php
 session_start();
 include("config.php");
+include_once("system_helpers.php");
+ensureComplaintWorkflowSchema($conn);
 include("notification_helpers.php");
 
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {

@@ -52,10 +52,6 @@ if ($reportType === 'complaints') {
         // HOD: Show HOD Status column instead of Warden Approved
         fputcsv($output, ['Gatepass ID', 'Student Name', 'Department', 'Reason', 'Location', 'Leaving Date', 'Return Date', 'HOD Status']);
 
-        // HOD: only their department's gatepasses — show only HOD-relevant statuses:
-        // 1) Pending HOD (awaiting HOD decision)
-        // 2) HOD Approved → now Pending Warden (hod_approved = 1)
-        // 3) HOD Rejected (status = rejected AND hod_approved = 0, means HOD rejected it)
         $hodDepartment = isset($_SESSION['department']) ? trim((string) $_SESSION['department']) : '';
         $stmt = $conn->prepare(
             "SELECT gp.gatepass_id, s.name, s.department, gp.reason, gp.location, gp.date_going, gp.date_return, gp.status, gp.hod_approved
@@ -70,14 +66,14 @@ if ($reportType === 'complaints') {
                )
              ORDER BY gp.gatepass_id DESC"
         );
+        
         if ($stmt) {
             $stmt->bind_param("s", $hodDepartment);
             $stmt->execute();
             $result = $stmt->get_result();
 
-            if (!empty($result)) {
+            if ($result) {
                 while ($row = $result->fetch_assoc()) {
-                    // Determine HOD Status label
                     $hodApprovedFlag = (int) ($row['hod_approved'] ?? 0);
                     $gpStatusLower = strtolower(trim((string) $row['status']));
 
@@ -118,8 +114,8 @@ if ($reportType === 'complaints') {
              ORDER BY gp.gatepass_id DESC"
         );
 
-        if (!empty($result)) {
-            while ($row = $result instanceof mysqli_result ? $result->fetch_assoc() : mysqli_fetch_assoc($result)) {
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)) {
                 $statusFormatted = empty($row['security_status']) ? 'Waiting' : ucfirst(strtolower(trim((string) $row['security_status'])));
                 $timeLeft = !empty($row['submitted_at']) ? date('h:i A', strtotime($row['submitted_at'])) : '';
                 $timeReturn = !empty($row['returned_at']) ? date('h:i A', strtotime($row['returned_at'])) : '';
@@ -142,7 +138,6 @@ if ($reportType === 'complaints') {
         // Warden: Show all columns including Warden Approved
         fputcsv($output, ['Gatepass ID', 'Student Name', 'Department', 'Reason', 'Location', 'Leaving Date', 'Return Date', 'Status', 'HOD Approved', 'Warden Approved']);
 
-        // Warden: all gatepasses
         $result = mysqli_query(
             $conn,
             "SELECT gp.gatepass_id, s.name, s.department, gp.reason, gp.location, gp.date_going, gp.date_return, gp.status, gp.hod_approved, gp.warden_approved
@@ -151,8 +146,8 @@ if ($reportType === 'complaints') {
              ORDER BY gp.gatepass_id DESC"
         );
 
-        if (!empty($result)) {
-            while ($row = $result instanceof mysqli_result ? $result->fetch_assoc() : mysqli_fetch_assoc($result)) {
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)) {
                 fputcsv($output, [
                     $row['gatepass_id'],
                     $row['name'],
